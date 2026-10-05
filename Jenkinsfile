@@ -28,6 +28,20 @@ pipeline {
             }
         }
     }
+    stage('Docker Hub Push') {
+    steps {
+        withCredentials([usernamePassword(
+            credentialsId: 'dockerhub-credentials',
+            usernameVariable: 'DOCKERHUB_USERNAME',
+            passwordVariable: 'DOCKERHUB_PASSWORD'
+        )]) {
+            bat 'echo %DOCKERHUB_PASSWORD% | docker login -u %DOCKERHUB_USERNAME% --password-stdin'
+            bat 'docker tag inventory-backend:latest %DOCKERHUB_USERNAME%/inventory-management:latest'
+            bat 'docker push %DOCKERHUB_USERNAME%/inventory-management:latest'
+            bat 'docker logout'
+        }
+    }
+}
 
     post {
         success {
