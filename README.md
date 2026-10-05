@@ -1,6 +1,6 @@
 # Inventory Management System (DevOps)
 
-A clean, modular, backend-only Inventory Management System designed for college DevOps practical examinations and viva demonstrations.
+A clean, modular, Inventory Management System designed for DevOps practical examinations and viva demonstrations.
 
 ## Features
 
