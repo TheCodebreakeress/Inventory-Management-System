@@ -1,0 +1,13 @@
+services:
+  inventory-backend:
+    build: .
+    container_name: inventory-backend
+    ports:
+      - "8000:8000"
+    environment:
+      - APP_NAME=Inventory Management System
+      - APP_VERSION=1.0.0
+      - DATABASE_URL=sqlite:///./data/inventory.db
+      - LOW_STOCK_THRESHOLD=10
+    volumes:
+      - ./data:/app/data

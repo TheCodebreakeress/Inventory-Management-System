@@ -1,0 +1,10 @@
+venv/
+.env
+__pycache__/
+*.pyc
+.pytest_cache/
+.git/
+.idea/
+.vscode/
+data/inventory.db
+tests/__pycache__/
