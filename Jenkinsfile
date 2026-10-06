@@ -39,6 +39,10 @@ pipeline {
                     bat 'echo Jenkins Docker username: %DOCKERHUB_USERNAME%'
 
                     powershell '''
+                    Write-Host "Docker token length: $($env:DOCKERHUB_PASSWORD.Length)"
+                    '''
+
+                    powershell '''
                     $env:DOCKERHUB_PASSWORD | docker login -u $env:DOCKERHUB_USERNAME --password-stdin
                     '''
 
