@@ -36,6 +36,8 @@ pipeline {
                     passwordVariable: 'DOCKERHUB_PASSWORD'
                 )]) {
 
+                    bat 'echo Jenkins Docker username: %DOCKERHUB_USERNAME%'
+
                     powershell '''
                     $env:DOCKERHUB_PASSWORD | docker login -u $env:DOCKERHUB_USERNAME --password-stdin
                     '''
