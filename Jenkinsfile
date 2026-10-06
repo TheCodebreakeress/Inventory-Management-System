@@ -30,25 +30,18 @@ pipeline {
 
         stage('Docker Hub Push') {
             steps {
-                withCredentials([usernamePassword(
-                    credentialsId: 'dockerhub-credentials-new',
-                    usernameVariable: 'DOCKERHUB_USERNAME',
-                    passwordVariable: 'DOCKERHUB_PASSWORD'
+                withCredentials([string(
+                    credentialsId: 'dockerhub-token',
+                    variable: 'DOCKERHUB_TOKEN'
                 )]) {
 
-                    bat 'echo Jenkins Docker username: %DOCKERHUB_USERNAME%'
-
                     powershell '''
-                    Write-Host "Docker token length: $($env:DOCKERHUB_PASSWORD.Length)"
+                    $env:DOCKERHUB_TOKEN | docker login -u jill0410 --password-stdin
                     '''
 
-                    powershell '''
-                    $env:DOCKERHUB_PASSWORD | docker login -u $env:DOCKERHUB_USERNAME --password-stdin
-                    '''
+                    bat 'docker tag inventory-backend:latest jill0410/inventory-management:latest'
 
-                    bat 'docker tag inventory-backend:latest %DOCKERHUB_USERNAME%/inventory-management:latest'
-
-                    bat 'docker push %DOCKERHUB_USERNAME%/inventory-management:latest'
+                    bat 'docker push jill0410/inventory-management:latest'
 
                     bat 'docker logout'
                 }
