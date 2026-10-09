@@ -1,5 +1,6 @@
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
+from prometheus_fastapi_instrumentator import Instrumentator
 from app.config import settings
 from app.database import engine, Base
 import app.models  # Ensure models are imported for metadata creation
@@ -32,6 +33,10 @@ app = FastAPI(
         {"name": "Dashboard", "description": "Inventory overview and metrics"},
     ],
 )
+
+# Enable Prometheus metrics
+Instrumentator().instrument(app).expose(app)
+
 
 # Root endpoint returning basic application information
 @app.get("/", tags=["Root"])
