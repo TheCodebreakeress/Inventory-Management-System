@@ -35,9 +35,15 @@ pipeline {
                     variable: 'DOCKERHUB_TOKEN'
                 )]) {
 
-                    powershell '''
-                    $env:DOCKERHUB_TOKEN | docker login -u jill0410 --password-stdin
-                    '''
+                powershell '''
+                     $ErrorActionPreference = "Stop"
+                     $token = $env:DOCKERHUB_TOKEN.Trim()
+                     $token | docker login --username "jill0410" --password-stdin
+
+                    if ($LASTEXITCODE -ne 0) {
+                        throw "Docker Hub login failed"
+                    }
+                '''
 
                     bat 'docker tag inventory-backend:latest jill0410/inventory-management:latest'
 
