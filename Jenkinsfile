@@ -28,7 +28,7 @@ pipeline {
             }
         }
 
-        stage('Docker Hub Push') {
+                stage('Docker Hub Push') {
             steps {
                 withCredentials([string(
                     credentialsId: 'dockerhub-token',
@@ -36,9 +36,11 @@ pipeline {
                 )]) {
 
                 powershell '''
-                     $ErrorActionPreference = "Stop"
-                     $token = $env:DOCKERHUB_TOKEN.Trim()
-                     $token | docker login --username "jill0410" --password-stdin
+                    $ErrorActionPreference = "Continue"
+                    $token = $env:DOCKERHUB_TOKEN.Trim()
+                    Write-Host "Token length: $($token.Length)"
+
+                    $token | docker login --username "jill0410" --password-stdin
 
                     if ($LASTEXITCODE -ne 0) {
                         throw "Docker Hub login failed"
@@ -53,15 +55,3 @@ pipeline {
                 }
             }
         }
-    }
-
-    post {
-        success {
-            echo 'Inventory Management CI/CD completed successfully!'
-        }
-
-        failure {
-            echo 'Inventory Management CI/CD failed!'
-        }
-    }
-}
